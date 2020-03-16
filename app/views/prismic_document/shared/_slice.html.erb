@@ -1,0 +1,19 @@
+<% if PRISMIC_SLICE_TYPES.include? slice.slice_type %>
+  <div class="card prismic-slices <%= get_prismic_styles(slice) %>">
+    <div class="card-body">
+      <%= render partial: "prismic_document/shared/prismic_slice_types/#{slice.slice_type}",
+                 locals: {
+                   list_type: slice.non_repeat["list_type"]&.value,
+                   items: slice.repeat,
+                   image_type: slice.non_repeat["image_type"]&.value,
+                   intro_text: slice.non_repeat["intro_text"]&.as_html(nil),
+                   image: slice.non_repeat["image"],
+                   outro_text: slice.non_repeat["outro_text"]&.as_html(nil),
+                   text_type: slice.non_repeat["text_type"]&.value,
+                   text: slice.non_repeat["text"]&.as_html(nil),
+                   data_type: slice.non_repeat["data_type"]&.as_text
+                 }
+      %>
+    </div>
+  </div>
+<% end %>

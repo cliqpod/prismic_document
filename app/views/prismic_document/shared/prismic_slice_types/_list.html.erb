@@ -1,0 +1,11 @@
+<p class="lead"><%= intro_text.html_safe if intro_text %></p>
+
+<span class="card-list">
+  <<%= list_type %>>
+    <% items.each do |item| %>
+      <li>
+        <%= item["list_item"]&.as_html(nil)&.html_safe %>
+      </li>
+    <% end %>
+  </<%= list_type %>>
+</span>
