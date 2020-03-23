@@ -1,26 +1,26 @@
-require 'dry-struct'
+# require 'dry-struct'
 module PrismicDocument
 
-  module Types
-    include Dry.Types()
-  end
-
-  class BaseSlice < Dry::Struct
-    attribute :name, Types::String
-  end
-
-  class TextSlice < BaseSlice
-    attribute :text, Types::String
-    attribute :text_type, Types::String
-    attribute :background_color, Types::String.optional
-  end
-
-  class ImageSlice < BaseSlice
-    attribute :image_type, Types::String
-    attribute :intro_text, Types::String.optional
-    attribute :outro_text, Types::String.optional
-    # attribute :image
-  end
+  # module Types
+  #   include Dry.Types()
+  # end
+  #
+  # class BaseSlice < Dry::Struct
+  #   attribute :name, Types::String
+  # end
+  #
+  # class TextSlice < BaseSlice
+  #   attribute :text, Types::String
+  #   attribute :text_type, Types::String
+  #   attribute :background_color, Types::String.optional
+  # end
+  #
+  # class ImageSlice < BaseSlice
+  #   attribute :image_type, Types::String
+  #   attribute :intro_text, Types::String.optional
+  #   attribute :outro_text, Types::String.optional
+  #   # attribute :image
+  # end
 
   class Page
     def self.fields(*args)

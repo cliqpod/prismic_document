@@ -21,6 +21,11 @@ Or install it yourself as:
 $ gem install prismic_document
 ```
 
+## Usage
+
+* if you wanna override prismic slice partial, or slice type partial, create folder `app/views/prismic_document/shared/`
+and paste you template into `_slice.html.erb` or for e.g. `prismic_slice_types/_text.html`
+
 ## Contributing
 Contribution directions go here.
 
