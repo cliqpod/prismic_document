@@ -3,11 +3,16 @@ require 'singleton'
 class PrismicDocument::PrismicApi
   include Singleton
 
+  class << self
+    delegate :by_document_type, :by_path, :get_values_by_type, :reload_client, to: :instance
+  end
+
+
   attr_accessor :client
   delegate_missing_to :@client
 
   def initialize
-    @client = Prismic.api(ENV['PRISMIC_API'], access_token: ENV['PRISMIC_KEY'])
+    @client = Prismic.api(PrismicDocument.configuration.api_url, access_token: PrismicDocument.configuration.api_key)
   end
 
   def by_document_type(request_domain, doc_type)
@@ -22,7 +27,8 @@ class PrismicDocument::PrismicApi
 
   def by_path(request_domain, doc_type, path)
     PrismicDocument::Retry.call(default: nil) do
-      query([Prismic::Predicates.at("my.#{doc_type}.domain", request_domain), Prismic::Predicates.at("my.#{doc_type}.path", path.to_s)]).results&.first
+      doc = query([Prismic::Predicates.at("my.#{doc_type}.domain", request_domain), Prismic::Predicates.at("my.#{doc_type}.path", path.to_s)]).results&.first
+      "PrismicDocument::#{doc_type.capitalize}Page".constantize.new(object: doc)
     end
   end
 

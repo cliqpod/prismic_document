@@ -1,36 +1,22 @@
 <div class="image <%= image_type %>">
-<% if intro_text %>
-  <p class="lead"><%= intro_text.html_safe %></p>
-<% end %>
-  <%
-    img_mobile = image.get_view('mobile')
-    img_raw = image.get_view('main')
-  %>
-
-  <p class="text-center">
-    <a target="_blank" href="<%= internal_image_url(img_raw.url) %>">
-      <b>Click to view the full-size infographic</b>
-    </a>
-  </p>
-  <div class="infographic" id="<%#= slice.non_repeat['anchor']&.as_text %>">
-    <a target="_blank" href="<%= internal_image_url(img_raw.url) %>">
-      <picture>
-        <source media="(max-width: 400px)", srcset="<%= img_mobile.url %>"/>
-        <source srcset="<%= internal_image_url(img_raw.url) %>" />
-        <image src="<%= internal_image_url(img_raw.url) %>" />
-      </picture>
-    </a>
-  </div>
-  <div>
-  </div>
+  <% if intro_text %>
+    <p class="lead"><%= intro_text.html_safe %></p>
+  <% end %>
+  <a target="_blank" href="<%= image.get_view('main').internal_image_url %>" loading="lazy">
+    <picture alt="<%= image.alt %>">
+      <source media="(max-width: 400px)", srcset="<%= image.get_view('mobile').internal_image_url %>"/>
+      <source srcset="<%= image.get_view('main').internal_image_url %>" loading="lazy" />
+      <img class="mx-auto d-block" src="<%= image.get_view('main').internal_image_url %>" loading="lazy" alt="<%= image.alt %>" />
+    </picture>
+  </a>
   <% if image_type == "disabled_infographic" %>
     <div class="embed-code">
     <div style="text-align: center;">
       Embed code:
       <br/>
       <textarea readonly style="width: 600px; height: 75px; border:1px solid #ccc !important">
-        <a href="https://word.tips<%= internal_image_url image.get_view('main').url %>" loading="lazy">
-          <imgs rc="https://word.tips<%= internal_image_url image.get_view('main').url %>" loading="lazy" alt="<%= image.alt %>" title="<%= request.domain %> Infographic"/>
+        <a href="https://word.tips<%= image.get_view('main').internal_image_url %>" loading="lazy">
+          <imgs rc="https://word.tips<%= image.get_view('main').internal_image_url %>" loading="lazy" alt="<%= image.alt %>" title="<%= request.domain %> Infographic"/>
         </a><br/>
         <a href="https://www.Word.Tips" title="Word.Tips">By Word.Tips</a>
       </textarea>

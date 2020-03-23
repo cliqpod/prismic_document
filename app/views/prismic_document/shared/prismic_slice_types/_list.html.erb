@@ -4,7 +4,7 @@
   <<%= list_type %>>
     <% items.each do |item| %>
       <li>
-        <%= item["list_item"]&.as_html(nil)&.html_safe %>
+        <%= item["list_item"]&.as_text %>
       </li>
     <% end %>
   </<%= list_type %>>
