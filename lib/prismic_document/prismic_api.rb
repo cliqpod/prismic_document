@@ -15,13 +15,13 @@ class PrismicDocument::PrismicApi
     @client = Prismic.api(PrismicDocument.configuration.api_url, access_token: PrismicDocument.configuration.api_key)
   end
 
-  def by_document_type(request_domain, doc_type)
+  def by_document_type(request_domain, doc_type, options: {})
     PrismicDocument::Retry.call(default: []) do
       query([
                 Prismic::Predicates.at('document.type', doc_type.to_s),
                 Prismic::Predicates.at("my.#{doc_type}.domain", request_domain)
             ],
-            'orderings' => '[document.first_publication_date desc]').results.map { |x| PrismicDocument::Page.new(object: x, type: doc_type)}
+            { 'orderings' => '[document.first_publication_date desc]' }.merge(options)).results.map { |x| PrismicDocument::Page.new(object: x, type: doc_type)}
     end
   end
 
