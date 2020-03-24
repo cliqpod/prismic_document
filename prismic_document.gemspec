@@ -26,7 +26,6 @@ Gem::Specification.new do |spec|
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
   spec.add_dependency "rails", "~> 6.0.2", ">= 6.0.2.1"
-  spec.add_dependency "dry-struct"
   spec.add_dependency 'rack-proxy', '~> 0.6.4'
   spec.add_dependency 'prismic.io'
   spec.add_dependency 'rest-client'
