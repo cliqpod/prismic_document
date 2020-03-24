@@ -2,7 +2,7 @@ require 'rack-proxy'
 
 class PrismicDocument::ImageProxy < Rack::Proxy
   def call(env)
-    if env['REQUEST_PATH'] && env['REQUEST_PATH'].index(PrismicDocument::IMAGE_PROXY_PATH) == 0
+    if env['REQUEST_PATH'] && env['REQUEST_PATH'].index(PrismicDocument.configuration.image_proxy_path) == 0
       super
     else
       @app.call(env)
@@ -10,7 +10,8 @@ class PrismicDocument::ImageProxy < Rack::Proxy
   end
 
   def rewrite_env(env)
-    env['REQUEST_PATH'] = env['REQUEST_URI'] = env['PATH_INFO'] = env['ORIGINAL_FULLPATH'] = env['REQUEST_PATH'].gsub(PrismicDocument::IMAGE_PROXY_PATH, '')
+    prefix = PrismicDocument.configuration.prismic_cdn.split('.').first
+    env['REQUEST_PATH'] = env['REQUEST_URI'] = env['PATH_INFO'] = env['ORIGINAL_FULLPATH'] = "/#{prefix}" + env['REQUEST_PATH'].gsub(PrismicDocument.configuration.image_proxy_path, '')
     env['HTTP_HOST'] = PrismicDocument.configuration.prismic_cdn
     env['SERVER_PORT'] = '80'
     env

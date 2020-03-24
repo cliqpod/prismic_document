@@ -12,7 +12,6 @@ require_relative '../patches/boolean'
 require_relative '../patches/image_url'
 
 module PrismicDocument
-  IMAGE_PROXY_PATH = '/pictures'
   class Engine < Rails::Engine
     initializer 'local_helper.action_controller' do
       ActiveSupport.on_load :action_controller do
@@ -22,11 +21,12 @@ module PrismicDocument
   end
 
   class Configuration
-    attr_accessor :api_url, :api_key, :prismic_cdn
+    attr_accessor :api_url, :api_key, :prismic_cdn, :image_proxy_path
     def initialize
       @api_url = ENV['PRISMIC_URI']
       @api_key = ENV['PRISMIC_KEY']
       @prismic_cdn = ENV['PRISMIC_CDN']
+      @image_proxy_path = '/pictures'
     end
   end
 

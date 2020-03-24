@@ -40,7 +40,7 @@ module PrismicDocument
       @object = object
     end
 
-    def render
+    def render_slices
       if @object["#{@type}.body"].present?
         ApplicationController.render partial: 'prismic_document/shared/slice', collection: @object["#{@type}.body"].slices
       end
