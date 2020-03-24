@@ -32,17 +32,25 @@ module PrismicDocument
     end
 
     delegate :present?, to: :object
-    fields :name, :domain, :path, :title, :description
+    # fields :name, :domain, :path, :title, :description
     attr_reader :object
 
-    def initialize(object:)
-      @type = self.class.name.demodulize.split('Page').first.downcase
+    def initialize(object:, type: )
+      @type = type || self.class.name.demodulize.split('Page').first.downcase
       @object = object
     end
 
     def render_slices
       if @object["#{@type}.body"].present?
         ApplicationController.render partial: 'prismic_document/shared/slice', collection: @object["#{@type}.body"].slices
+      end
+    end
+
+    def method_missing(name, *args, &block)
+      if @object["#{@type}.#{name}"].present?
+        @object["#{@type}.#{name}"]
+      else
+        nil
       end
     end
   end

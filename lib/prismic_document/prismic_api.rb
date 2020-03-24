@@ -21,14 +21,14 @@ class PrismicDocument::PrismicApi
                 Prismic::Predicates.at('document.type', doc_type.to_s),
                 Prismic::Predicates.at("my.#{doc_type}.domain", request_domain)
             ],
-            'orderings' => '[document.first_publication_date desc]').results
+            'orderings' => '[document.first_publication_date desc]').results.map { |x| PrismicDocument::Page.new(object: x, type: doc_type)}
     end
   end
 
   def by_path(request_domain, doc_type, path)
     PrismicDocument::Retry.call(default: nil) do
       doc = query([Prismic::Predicates.at("my.#{doc_type}.domain", request_domain), Prismic::Predicates.at("my.#{doc_type}.path", path.to_s)]).results&.first
-      "PrismicDocument::#{doc_type.capitalize}Page".constantize.new(object: doc)
+      PrismicDocument::Page.new(object: doc, type: doc_type)
     end
   end
 
