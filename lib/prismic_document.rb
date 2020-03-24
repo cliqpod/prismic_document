@@ -21,12 +21,17 @@ module PrismicDocument
   end
 
   class Configuration
-    attr_accessor :api_url, :api_key, :prismic_cdn, :image_proxy_path
+    attr_accessor :api_url, :api_key, :prismic_cdn, :image_proxy_path, :base_controller, :auth
     def initialize
       @api_url = ENV['PRISMIC_URI']
       @api_key = ENV['PRISMIC_KEY']
       @prismic_cdn = ENV['PRISMIC_CDN']
       @image_proxy_path = '/pictures'
+      @base_controller = ApplicationController
+      @auth = {
+          username: ENV["PRISMIC_ADMIN_USERNAME"],
+          password: ENV["PRISMIC_ADMIN_PASSWORD"]
+      }
     end
   end
 

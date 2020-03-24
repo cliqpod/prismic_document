@@ -1,7 +1,8 @@
 PATH
   remote: .
   specs:
-    prismic_document (0.1.3)
+    prismic_document (0.1.4)
+      coderay
       prismic.io
       rack-proxy (~> 0.6.4)
       rails (~> 6.0.0)
@@ -67,6 +68,7 @@ GEM
       zeitwerk (~> 2.2)
     ast (2.4.0)
     builder (3.2.4)
+    coderay (1.1.2)
     concurrent-ruby (1.1.6)
     crass (1.0.6)
     domain_name (0.5.20190701)

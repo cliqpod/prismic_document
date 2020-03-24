@@ -60,6 +60,9 @@ namespace :prismic_document do
     end
     slices_yml = Rails.root.join('config', 'prismic', 'slices.yaml')
     types_yml = Rails.root.join('config', 'prismic', 'types.yaml')
+    unless Dir.exists?(Rails.root.join('config', 'prismic'))
+      Dir.mkdir(Rails.root.join('config', 'prismic'))
+    end
     File.open(slices_yml, "w+") do |f|
       f << slices.to_yaml
     end

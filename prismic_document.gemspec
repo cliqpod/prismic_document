@@ -29,6 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'rack-proxy', '~> 0.6.4'
   spec.add_dependency 'prismic.io'
   spec.add_dependency 'rest-client'
+  spec.add_dependency 'coderay'
 
   spec.add_development_dependency "sqlite3"
   spec.add_development_dependency "rubocop"
