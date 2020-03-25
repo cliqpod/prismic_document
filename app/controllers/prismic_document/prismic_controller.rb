@@ -2,7 +2,7 @@ class PrismicDocument::PrismicController < PrismicDocument.configuration.base_co
   before_action :authenticate
   before_action :set_background, only: :types
   def index
-    client = Prismic.api(ENV['PRISMIC_URI'], ENV['PRISMIC_KEY'])
+    client = Prismic.api(PrismicDocument.configuration.api_url, PrismicDocument.configuration.api_key)
 
     options = { "pageSize" => 100 }
     response = client.all(options)

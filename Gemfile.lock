@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    prismic_document (0.1.5)
+    prismic_document (0.1.6)
       coderay
       prismic.io
       rack-proxy (~> 0.6.4)
