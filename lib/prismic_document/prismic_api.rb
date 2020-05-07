@@ -4,7 +4,8 @@ class PrismicDocument::PrismicApi
   include Singleton
 
   class << self
-    delegate :by_document_type, :by_document_type_and_locale, :by_path, :by_path_and_locale, :get_values_by_type, :reload_client, to: :instance
+    delegate :by_document_type, :by_document_type_and_locale, :by_path, :by_path_and_locale,
+             :by_key, :by_key_and_locale, :get_values_by_type, :reload_client, to: :instance
   end
 
 
@@ -38,7 +39,8 @@ class PrismicDocument::PrismicApi
 
   def by_path(request_domain, doc_type, path)
     PrismicDocument::Retry.call(default: nil) do
-      doc = query([Prismic::Predicates.at("my.#{doc_type}.domain", request_domain), Prismic::Predicates.at("my.#{doc_type}.path", path.to_s)]).results&.first
+      doc = query([Prismic::Predicates.at("my.#{doc_type}.domain", request_domain),
+                   Prismic::Predicates.at("my.#{doc_type}.path", path.to_s)]).results&.first
       PrismicDocument::Page.new(object: doc, type: doc_type)
     end
   end
@@ -48,6 +50,24 @@ class PrismicDocument::PrismicApi
       doc = query([
                       Prismic::Predicates.at("my.#{doc_type}.domain", request_domain),
                       Prismic::Predicates.at("my.#{doc_type}.path", path.to_s)
+                  ], { "lang" => locale.to_s }).results&.first
+      PrismicDocument::Page.new(object: doc, type: doc_type)
+    end
+  end
+
+  def by_key(request_domain, doc_type, uid)
+    PrismicDocument::Retry.call(default: nil) do
+      doc = query([Prismic::Predicates.at("my.#{doc_type}.domain", request_domain),
+                   Prismic::Predicates.at("my.#{doc_type}.uid", uid)]).results&.first
+      PrismicDocument::Page.new(object: doc, type: doc_type)
+    end
+  end
+
+  def by_key_and_locale(request_domain, doc_type, uid, locale = 'en')
+    PrismicDocument::Retry.call(default: nil) do
+      doc = query([
+                      Prismic::Predicates.at("my.#{doc_type}.domain", request_domain),
+                      Prismic::Predicates.at("my.#{doc_type}.uid", uid)
                   ], { "lang" => locale.to_s }).results&.first
       PrismicDocument::Page.new(object: doc, type: doc_type)
     end
