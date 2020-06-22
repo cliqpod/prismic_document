@@ -40,7 +40,8 @@ class PrismicDocument::PrismicApi
   def by_path(request_domain, doc_type, path)
     PrismicDocument::Retry.call(default: nil) do
       doc = query([Prismic::Predicates.at("my.#{doc_type}.domain", request_domain),
-                   Prismic::Predicates.at("my.#{doc_type}.path", path.to_s)]).results&.first
+                   Prismic::Predicates.at("my.#{doc_type}.path", path.to_s)],
+                  { "fetchLinks" => "author.name, author.bio, author.image" }).results&.first
       PrismicDocument::Page.new(object: doc, type: doc_type)
     end
   end
