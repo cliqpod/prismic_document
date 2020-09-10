@@ -14,10 +14,12 @@ class PrismicDocument::PrismicApi
   delegate_missing_to :@client
 
   def initialize
-    @client = Prismic.api(PrismicDocument.configuration.api_url,
-                          access_token: PrismicDocument.configuration.api_key,
-                          cache: PrismicDocument.configuration.cache,
-                          api_cache: PrismicDocument.configuration.api_cache)
+    opts = {
+        access_token: PrismicDocument.configuration.api_key,
+    }
+    opts[:cache] = PrismicDocument.configuration.cache if PrismicDocument.configuration.cache
+    opts[:api_cache] = PrismicDocument.configuration.cache if PrismicDocument.configuration.api_cache
+    @client = Prismic.api(PrismicDocument.configuration.api_url, opts)
   end
 
   def by_document_type(request_domain, doc_type, options: {})
