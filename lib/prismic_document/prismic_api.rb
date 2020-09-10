@@ -16,7 +16,8 @@ class PrismicDocument::PrismicApi
   def initialize
     @client = Prismic.api(PrismicDocument.configuration.api_url,
                           access_token: PrismicDocument.configuration.api_key,
-                          cache: PrismicDocument.configuration.cache)
+                          cache: PrismicDocument.configuration.cache,
+                          api_cache: PrismicDocument.configuration.api_cache)
   end
 
   def by_document_type(request_domain, doc_type, options: {})
