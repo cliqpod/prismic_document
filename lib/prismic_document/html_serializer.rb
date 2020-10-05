@@ -13,6 +13,8 @@ PrismicDocument::TextHTMLSerializer = lambda do |domain, link_resolver = nil|
         target = target_value.nil? ? "" : 'target="' + target_value + '" rel="nofollow"'
         %(<a href="#{link.url}" #{target}>#{html}</a>)
       end
+    else
+      nil
     end
   end
 end

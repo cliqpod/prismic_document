@@ -56,27 +56,27 @@ module PrismicDocument
   end
 
   class StaticPage < Page
-    fields :sub_title
+    fields :sub_title, :keywords
   end
 
   class ArticlePage < Page
-    fields :sub_title, :is_featured, :show_comments, :show_social_buttons, :teaser_image, :main_image
+    fields :sub_title, :is_featured, :show_comments, :show_social_buttons, :teaser_image, :main_image, :keywords
   end
 
   class SearchPage < Page
-    fields :title_for_search, :anchors, :default_dict
+    fields :title_for_search, :anchors, :default_dict, :keywords
   end
 
   class DictionaryPage < Page
-    fields :title_for_search, :anchors, :default_dict
+    fields :title_for_search, :anchors, :default_dict, :keywords
   end
 
   class ListPage < Page
-    fields :title_for_search, :anchors, :default_dict, :intro_text
+    fields :title_for_search, :anchors, :default_dict, :intro_text, :keywords
   end
 
   class ToolPage < Page
-    fields :sub_title, :teaser_image, :is_featured
+    fields :sub_title, :teaser_image, :is_featured, :keywords
   end
 
   # router-network types

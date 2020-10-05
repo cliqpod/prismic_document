@@ -6,6 +6,7 @@ require 'prismic'
   prismic_api
   image_proxy
   html_serializer
+  interlink_service
 ].each { |r| require "prismic_document/#{r}" }
 require 'types/struct'
 require_relative '../app/helpers/application_helper'
