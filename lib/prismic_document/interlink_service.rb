@@ -17,9 +17,8 @@ class PrismicDocument::InterlinkService
     end
 
     def call(match_text)
-      # PrismicDocument::InterlinkService.keywords
-      [PrismicDocument::InterlinkService.keywords.first].to_h.reduce(match_text || '') do |text, (keyword, path)|
-        text.gsub(/(?<!\w)(?<foo>#{Regexp.escape(keyword)})(?!\w)/i, "<a href=\"#{path}/\">\\k<foo></a>")
+      PrismicDocument::InterlinkService.keywords.to_h.reduce(match_text || '') do |text, (keyword, path)|
+          text.gsub(/(?!<a[^>]*>)(?<!\w)(?<foo>#{Regexp.escape(keyword)})(?!\w)(?![^<]*<\/a>)/i, "<a href=\"#{path}/\">\\k<foo></a>")
       end
     end
 
