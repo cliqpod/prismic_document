@@ -28,7 +28,8 @@ class PrismicDocument::PrismicApi
               Prismic::Predicates.at('document.type', doc_type.to_s),
               Prismic::Predicates.at("my.#{doc_type}.domain", request_domain)
             ],
-            { 'pageSize' => 100, 'orderings' => '[document.first_publication_date desc]' }.merge(options)).results.map { |x| PrismicDocument::Page.new(object: x, type: doc_type) }
+            { 'pageSize' => 100, 'orderings' => '[document.first_publication_date desc]' }
+                .merge(options)).results.map { |x| PrismicDocument::Page.new(object: x, type: doc_type) }
     end
   end
 
@@ -38,7 +39,8 @@ class PrismicDocument::PrismicApi
               Prismic::Predicates.at('document.type', doc_type.to_s),
               Prismic::Predicates.at("my.#{doc_type}.domain", request_domain)
             ],
-            { 'pageSize' => 100, 'lang' => locale.to_s, 'orderings' => '[document.first_publication_date desc]' }.merge(options))
+            { 'pageSize' => 100, 'lang' => locale.to_s, 'orderings' => '[document.first_publication_date desc]' }
+            .merge(options))
         .results.map { |x| PrismicDocument::Page.new(object: x, type: doc_type) }
     end
   end
@@ -57,7 +59,8 @@ class PrismicDocument::PrismicApi
       doc = query([
                     Prismic::Predicates.at("my.#{doc_type}.domain", request_domain),
                     Prismic::Predicates.at("my.#{doc_type}.path", path.to_s)
-                  ], 'lang' => locale.to_s).results&.first
+                  ], 'fetchLinks' => 'author.name, author.bio, author.image',
+                     'lang' => locale.to_s).results&.first
       PrismicDocument::Page.new(object: doc, type: doc_type)
     end
   end
@@ -65,7 +68,8 @@ class PrismicDocument::PrismicApi
   def by_key(request_domain, doc_type, uid)
     PrismicDocument::Retry.call(default: nil) do
       doc = query([Prismic::Predicates.at("my.#{doc_type}.domain", request_domain),
-                   Prismic::Predicates.at("my.#{doc_type}.uid", uid)]).results&.first
+                   Prismic::Predicates.at("my.#{doc_type}.uid", uid)],
+                  'fetchLinks' => 'author.name, author.bio, author.image').results&.first
       PrismicDocument::Page.new(object: doc, type: doc_type)
     end
   end
@@ -75,7 +79,9 @@ class PrismicDocument::PrismicApi
       doc = query([
                     Prismic::Predicates.at("my.#{doc_type}.domain", request_domain),
                     Prismic::Predicates.at("my.#{doc_type}.uid", uid)
-                  ], 'lang' => locale.to_s).results&.first
+                  ], 'fetchLinks' => 'author.name, author.bio, author.image',
+                     'lang' => locale.to_s).results&.first
+
       PrismicDocument::Page.new(object: doc, type: doc_type)
     end
   end
