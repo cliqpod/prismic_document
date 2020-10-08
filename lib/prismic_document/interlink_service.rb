@@ -21,8 +21,8 @@ class PrismicDocument::InterlinkService
         if path == ignore_path
           text
         else
-          text.gsub(/(?!<(a|h1|h2|h3|h4|h5|h6)[^>]*>)(?<!\w)(?<foo>#{Regexp.escape(keyword)})(?!\w)(?![^<]*<\/(a|h1|h2|h3|h4|h5|h6)>)/i, "<a href=\"#{path}/\">\\k<foo></a>")
-          end
+          text.gsub(/(?!<(a|h1|h2|h3|h4|h5|h6)[^>]*>)(?<!\w)(?<foo>#{Regexp.escape(keyword)})(?!\w)(?![^<]*<\/(a|h1|h2|h3|h4|h5|h6)>)/i, "<a href=\"#{path.chomp('/')}/\">\\k<foo></a>")
+        end
       end
     end
 
