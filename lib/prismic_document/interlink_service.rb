@@ -5,19 +5,24 @@ class PrismicDocument::InterlinkService
       docs = []
       loop do
         options = { 'pageSize' => 100, 'page' => page }
+
         response = PrismicDocument::PrismicApi.instance.client.all(options)
         page += 1
         docs = docs.concat(response.results)
         break if response.current_page == response.total_pages
       end
-      @keywords = docs.map { |x| PrismicDocument::Page.new(object: x, type: x.type) }.reduce(ActiveSupport::OrderedHash.new) do |acc, page|
-        keywords = page.keywords&.value&.split(',')&.map(&:strip) || []
-        acc.merge(keywords.sort{|x,y| y.length - x.length}.reduce({}) { |obj, kw| obj.merge(kw => page.path.value )})
+
+      @keywords = docs.map { |x| PrismicDocument::Page.new(object: x, type: x.type) }.group_by { |x| x.domain&.value }.select { |x, _| x.present? }.reduce(ActiveSupport::OrderedHash.new) do |acc, (domain, pages)|
+        words = pages.reduce({}) do |kwords, page|
+          keywords = page.keywords&.value&.split(',')&.map(&:strip) || []
+          kwords.merge(keywords.sort{|x,y| y.length - x.length}.reduce({}) { |obj, kw| obj.merge(kw => page.path.value )})
+        end
+        acc.merge(domain => words)
       end
     end
 
-    def call(match_text, ignore_path: nil)
-      PrismicDocument::InterlinkService.keywords.to_h.reduce(match_text || '') do |text, (keyword, path)|
+    def call(match_text, ignore_path: nil, domain: nil)
+      PrismicDocument::InterlinkService.keywords[domain].to_h.reduce(match_text || '') do |text, (keyword, path)|
         if path == ignore_path
           text
         else
