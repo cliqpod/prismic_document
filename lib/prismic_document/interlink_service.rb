@@ -22,7 +22,7 @@ class PrismicDocument::InterlinkService
     end
 
     def call(match_text, ignore_path: nil, domain: nil)
-      host = domain.split('.')[1..-1].join('.')
+      host = domain.split('.').last(2).join('.')
       PrismicDocument::InterlinkService.keywords[host].to_h.reduce(match_text || '') do |text, (keyword, path)|
         if path == ignore_path || (path == '/tools/word-counter' && domain.include?('wordcounter'))
           text
