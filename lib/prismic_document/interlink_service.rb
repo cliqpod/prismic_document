@@ -22,8 +22,9 @@ class PrismicDocument::InterlinkService
     end
 
     def call(match_text, ignore_path: nil, domain: nil)
-      PrismicDocument::InterlinkService.keywords[domain].to_h.reduce(match_text || '') do |text, (keyword, path)|
-        if path == ignore_path
+      host = domain.split('.').last(2).join('.')
+      PrismicDocument::InterlinkService.keywords[host].to_h.reduce(match_text || '') do |text, (keyword, path)|
+        if path == ignore_path || (path == '/tools/word-counter' && domain.include?('wordcounter'))
           text
         else
           text.gsub(/(?!<(a|h1|h2|h3|h4|h5|h6|a)[^>]*>)(?<!\w)(?<foo>#{Regexp.escape(keyword)})(?!\w)(?![^<]*<\/(a|h1|h2|h3|h4|h5|h6)>)/i, "<a href=\"#{path.chomp('/')}/\">\\k<foo></a>")

@@ -70,4 +70,34 @@ namespace :prismic_document do
       f << types.to_yaml
     end
   end
+  require 'optparse'
+
+  task check_slices: [:environment] do
+    options = {
+        field: 'data_type'
+    }
+    option_parser = OptionParser.new
+    option_parser.banner = "Usage: rake add [options]"
+    option_parser.on("-f", "--field ARG", String) { |num2| options[:field] = num2 }
+    args = option_parser.order!(ARGV) {}
+    option_parser.parse!(args)
+    field = options.values_at(:field)
+    page = 1
+    docs = []
+    loop do
+      options = { 'pageSize' => 100, 'page' => page }
+
+      response = PrismicDocument::PrismicApi.instance.client.all(options)
+      page += 1
+      docs = docs.concat(response.results)
+      break if response.current_page == response.total_pages
+    end
+    docs.each do |doc|
+      doc["#{doc.type}.body"]&.slices&.each do |slice|
+        if slice.non_repeat[field]
+          pp [doc["#{doc.type}.domain"].as_text, doc["#{doc.type}.path"].as_text]
+        end
+      end
+    end
+  end
 end
