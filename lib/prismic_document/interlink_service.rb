@@ -27,7 +27,12 @@ class PrismicDocument::InterlinkService
         if path == ignore_path || (path == '/tools/word-counter' && domain.include?('wordcounter'))
           text
         else
-          text.gsub(/(?!<(a|h1|h2|h3|h4|h5|h6|a)[^>]*>)(?<!\w)(?<foo>#{Regexp.escape(keyword)})(?!\w)(?![^<]*<\/(a|h1|h2|h3|h4|h5|h6)>)/i, "<a href=\"#{path.chomp('/')}/\">\\k<foo></a>")
+          doc = Nokogiri::HTML::fragment(text)
+          doc.search('.//text() | text()').select { |x| x.content.present? }.each do |node|
+            node.replace(node.content.gsub(/(?!<(a|h1|h2|h3|h4|h5|h6|a)[^>]*>)(?<!\w)(?<foo>#{Regexp.escape(keyword)})(?!\w)(?![^<]*<\/(a|h1|h2|h3|h4|h5|h6)>)/i, "<a href=\"#{path.chomp('/')}/\">\\k<foo></a>"))
+          end
+
+          doc.to_html
         end
       end
     end
