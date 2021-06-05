@@ -28,7 +28,7 @@ class PrismicDocument::InterlinkService
           text
         else
           doc = Nokogiri::HTML::fragment(text)
-          doc.search('.//text() | text()').select { |x| x.content.present? }.each do |node|
+          doc.search('.//text()[not(ancestor::h1 or ancestor::h2 or ancestor::h3 or ancestor::h4 or ancestor::h5 or ancestor::h6)]').select { |x| x.content.present? }.each do |node|
             node.replace(node.content.gsub(/(?!<(a|h1|h2|h3|h4|h5|h6|a)[^>]*>)(?<!\w)(?<foo>#{Regexp.escape(keyword)})(?!\w)(?![^<]*<\/(a|h1|h2|h3|h4|h5|h6)>)/i, "<a href=\"#{path.chomp('/')}/\">\\k<foo></a>"))
           end
 
