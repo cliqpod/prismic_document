@@ -17,7 +17,7 @@ class PrismicDocument::InterlinkService
           keywords = page.keywords&.value&.split(',')&.map(&:strip) || []
           kwords.merge(keywords.sort{|x,y| y.length - x.length}.reduce({}) { |obj, kw| obj.merge(kw => page.path.value )})
         end
-        acc.merge(domain => words)
+        acc.merge(domain => Hash[words.sort_by {|k, _| -k.length }])
       end
     end
 
