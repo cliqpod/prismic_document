@@ -1,6 +1,6 @@
 class PrismicDocument::Retry
-  def self.call(*args, &block)
-    new(args[0], &block).call
+  def self.call(**args, &block)
+    new(**args, &block).call
   end
 
   attr_reader :times, :delay, :block, :default

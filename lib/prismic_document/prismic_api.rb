@@ -33,6 +33,16 @@ class PrismicDocument::PrismicApi
     end
   end
 
+  def by_document_type_without_domain(doc_type, options: {})
+    PrismicDocument::Retry.call(default: []) do
+      query([
+              Prismic::Predicates.at('document.type', doc_type.to_s),
+            ],
+            { 'pageSize' => 100, 'orderings' => '[document.first_publication_date desc]' }
+              .merge(options)).results.map { |x| PrismicDocument::Page.new(object: x, type: doc_type) }
+    end
+  end
+
   def by_document_type_and_locale(request_domain, doc_type, locale = 'en', options: {})
     PrismicDocument::Retry.call(default: []) do
       query([
