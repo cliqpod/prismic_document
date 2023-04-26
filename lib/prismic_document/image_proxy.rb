@@ -13,8 +13,6 @@ class PrismicDocument::ImageProxy < Rack::Proxy
     prefix = PrismicDocument.configuration.prismic_cdn.split('.').first
     env['REQUEST_PATH'] = env['REQUEST_URI'] = env['PATH_INFO'] = env['ORIGINAL_FULLPATH'] = "/#{prefix}" + env['REQUEST_URI'].gsub(PrismicDocument.configuration.image_proxy_path, '')
     env['HTTP_HOST'] = 'images.prismic.io'
-    pp env['REQUEST_URI']
-    pp env['HTTP_HOST']
     env['SERVER_PORT'] = '80'
     env
   end
