@@ -1,6 +1,6 @@
 module InternalImageUrl
   def internal_image_url
-    "#{PrismicDocument.configuration.image_proxy_path}/#{URI.decode(url).split('/').last}"
+    "#{PrismicDocument.configuration.image_proxy_path}/#{URI.decode_www_form_component(url).split('/').last}"
   end
 end
 
